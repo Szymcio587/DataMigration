@@ -1,26 +1,39 @@
 package org.example.database;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Properties;
 
 public class DatabaseManager {
     private String url;
     private String username;
     private String password;
 
-    public DatabaseManager(String url, String username, String password) {
-        this.url = url;
-        this.username = username;
-        this.password = password;
+    private final String tableName = "users", databaseName = "source";
+
+    public DatabaseManager() {
+        Properties properties = new Properties();
+
+        try (FileInputStream fileInputStream = new FileInputStream("src/main/resources/database.properties")) {
+            properties.load(fileInputStream);
+            this.url = properties.getProperty("db.url");
+            this.username = properties.getProperty("db.user");
+            this.password = properties.getProperty("db.password");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void CreateAndConnect() {
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            CreateDatabaseIfNotExists(connection, "source");
-            connection.setCatalog("source");
-            CreateTable(connection, "users");
+            CreateDatabaseIfNotExists(connection);
+            connection.setCatalog(databaseName);
+            CreateTable(connection);
             System.out.println("Connected to the database.");
-            AddUser(connection, "users", "Szymon", "szymontalar@gmail.com");
-            RetrieveUsers(connection, "users");
+            AddUser(connection, "Szymon", "szymontalar@gmail.com");
+            RetrieveUsers(connection);
+            ClearTable(connection);
             connection.close();
             System.out.println("Disconnected from the database.");
         } catch (SQLException e) {
@@ -28,32 +41,32 @@ public class DatabaseManager {
         }
     }
 
-    private void CreateDatabaseIfNotExists(Connection connection, String name) {
+    private void CreateDatabaseIfNotExists(Connection connection) {
         try  {
             Statement statement = connection.createStatement();
-            statement.executeUpdate("CREATE DATABASE IF NOT EXISTS " + name + ";");
-            System.out.println("Database " + name + " has been created.");
+            statement.executeUpdate("CREATE DATABASE IF NOT EXISTS " + databaseName + ";");
+            System.out.println("Database " + databaseName + " has been created.");
         } catch (SQLException e) {
             System.out.println("Error creating the database: " + e.getMessage());
         }
     }
 
-    private void CreateTable(Connection connection, String name) {
+    private void CreateTable(Connection connection) {
         try {
             Statement statement = connection.createStatement();
-            String createTableQuery = "CREATE TABLE IF NOT EXISTS " + name + " (" +
+            String createTableQuery = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     "id INT PRIMARY KEY AUTO_INCREMENT," +
                     "name VARCHAR(255)," +
                     "email VARCHAR(255)" +
                     ")";
             statement.executeUpdate(createTableQuery);
-            System.out.println("Table " + name + " has been created.");
+            System.out.println("Table " + tableName + " has been created.");
         } catch (SQLException e) {
             System.out.println("Error creating the database: " + e.getMessage());
         }
     }
 
-    private void AddUser(Connection connection, String tableName, String name, String email) {
+    private void AddUser(Connection connection, String name, String email) {
         try {
             String insertQuery = "INSERT INTO " + tableName + " (name, email) VALUES (?, ?)";
 
@@ -69,7 +82,7 @@ public class DatabaseManager {
         }
     }
 
-    private void RetrieveUsers(Connection connection, String tableName) {
+    private void RetrieveUsers(Connection connection) {
         try {
             String selectQuery = "SELECT * FROM " + tableName;
 
@@ -85,7 +98,16 @@ public class DatabaseManager {
         } catch (SQLException e) {
             System.out.println("Error executing select query: " + e.getMessage());
         }
+    }
 
+    private void ClearTable(Connection connection) {
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("DELETE FROM " + tableName);
+            System.out.println("Table cleared successfully.");
+        } catch (SQLException e) {
+            System.out.println("Error while clearing the table: " + e.getMessage());
+        }
     }
 }
 
