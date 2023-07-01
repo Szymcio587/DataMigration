@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import java.sql.*;
 
+import static org.junit.Assert.*;
+
 public class DatabaseManagerTest {
 
     private DatabaseManager databaseManager;
@@ -14,7 +16,8 @@ public class DatabaseManagerTest {
     }
 
     @Test
-    public void TestConnection() {
+    public void TestConnectionAndQueries() {
+        int recordsNumber = 0;
         try (Connection connection = DriverManager.getConnection(databaseManager.getUrl(),
                 databaseManager.getUsername(), databaseManager.getPassword())) {
             databaseManager.CreateDatabaseIfNotExists(connection);
@@ -22,6 +25,9 @@ public class DatabaseManagerTest {
             databaseManager.CreateTable(connection);
             System.out.println("Connected to the database.");
             databaseManager.AddUser(connection, "Szymon", "szymontalar@gmail.com");
+            databaseManager.AddUser(connection, "Jan", "asdasz@gmail.com");
+            databaseManager.AddUser(connection, "Marcinek", "widmotk@gmail.com");
+            recordsNumber = databaseManager.GetTableSize(connection);
             databaseManager.RetrieveUsers(connection);
             databaseManager.ClearTable(connection);
             connection.close();
@@ -29,6 +35,7 @@ public class DatabaseManagerTest {
         } catch (SQLException e) {
             System.out.println("Error connecting to the database: " + e.getMessage());
         }
+        assertEquals(recordsNumber, 3);
     }
 
 }

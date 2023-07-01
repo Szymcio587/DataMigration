@@ -2,6 +2,9 @@ package org.example.database;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.Properties;
 
@@ -30,9 +33,9 @@ public class DatabaseManager {
             CreateDatabaseIfNotExists(connection);
             connection.setCatalog(databaseName);
             CreateTable(connection);
-            System.out.println("Connected to the database.");
             AddUser(connection, "Szymon", "szymontalar@gmail.com");
             RetrieveUsers(connection);
+            GetTableSize(connection);
             ClearTable(connection);
             connection.close();
             System.out.println("Disconnected from the database.");
@@ -43,8 +46,10 @@ public class DatabaseManager {
 
     public void CreateDatabaseIfNotExists(Connection connection) {
         try  {
+            String query = ReadSqlFromFile("src/main/resources/Scripts/V1/create_database.sql");
+            query = query.replace("{{databaseName}}", databaseName);
             Statement statement = connection.createStatement();
-            statement.executeUpdate("CREATE DATABASE IF NOT EXISTS " + databaseName + ";");
+            statement.executeUpdate(query);
             System.out.println("Database " + databaseName + " has been created.");
         } catch (SQLException e) {
             System.out.println("Error creating the database: " + e.getMessage());
@@ -53,13 +58,10 @@ public class DatabaseManager {
 
     public void CreateTable(Connection connection) {
         try {
+            String query = ReadSqlFromFile("src/main/resources/Scripts/V1/create_table.sql");
+            query = query.replace("{{tableName}}", tableName);
             Statement statement = connection.createStatement();
-            String createTableQuery = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
-                    "id INT PRIMARY KEY AUTO_INCREMENT," +
-                    "name VARCHAR(255)," +
-                    "email VARCHAR(255)" +
-                    ")";
-            statement.executeUpdate(createTableQuery);
+            statement.executeUpdate(query);
             System.out.println("Table " + tableName + " has been created.");
         } catch (SQLException e) {
             System.out.println("Error creating the database: " + e.getMessage());
@@ -68,9 +70,9 @@ public class DatabaseManager {
 
     public void AddUser(Connection connection, String name, String email) {
         try {
-            String insertQuery = "INSERT INTO " + tableName + " (name, email) VALUES (?, ?)";
+            String query = ReadSqlFromFile("src/main/resources/Scripts/V1/add_user.sql");
 
-            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, email);
 
@@ -84,10 +86,10 @@ public class DatabaseManager {
 
     public void RetrieveUsers(Connection connection) {
         try {
-            String selectQuery = "SELECT * FROM " + tableName;
-
+            String query = ReadSqlFromFile("src/main/resources/Scripts/V1/retrieve_users.sql");
+            query = query.replace("{{tableName}}", tableName);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(selectQuery);
+            ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
                 String column1Value = resultSet.getString("name");
@@ -102,12 +104,40 @@ public class DatabaseManager {
 
     public void ClearTable(Connection connection) {
         try {
+            String query = ReadSqlFromFile("src/main/resources/Scripts/V1/clear.sql");
+            query = query.replace("{{tableName}}", tableName);
             Statement statement = connection.createStatement();
-            statement.executeUpdate("DELETE FROM " + tableName);
+            statement.executeUpdate(query);
             System.out.println("Table cleared successfully.");
         } catch (SQLException e) {
             System.out.println("Error while clearing the table: " + e.getMessage());
         }
+    }
+
+    public int GetTableSize(Connection connection) {
+        int records = 0;
+        try {
+            String query = ReadSqlFromFile("src/main/resources/Scripts/V1/table_size.sql");
+            query = query.replace("{{tableName}}", tableName);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            resultSet.next();
+            records = resultSet.getInt("recordCount");
+        } catch (SQLException e) {
+            System.out.println("Error while clearing the table: " + e.getMessage());
+        }
+        return records;
+    }
+
+    private String ReadSqlFromFile(String filename) {
+        String content = "";
+        try {
+            Path path = Paths.get(filename);
+            content = Files.readString(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return content;
     }
 
     public String getUrl() {
