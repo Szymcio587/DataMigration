@@ -41,7 +41,7 @@ public class DatabaseManager {
         }
     }
 
-    private void CreateDatabaseIfNotExists(Connection connection) {
+    public void CreateDatabaseIfNotExists(Connection connection) {
         try  {
             Statement statement = connection.createStatement();
             statement.executeUpdate("CREATE DATABASE IF NOT EXISTS " + databaseName + ";");
@@ -51,7 +51,7 @@ public class DatabaseManager {
         }
     }
 
-    private void CreateTable(Connection connection) {
+    public void CreateTable(Connection connection) {
         try {
             Statement statement = connection.createStatement();
             String createTableQuery = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
@@ -66,7 +66,7 @@ public class DatabaseManager {
         }
     }
 
-    private void AddUser(Connection connection, String name, String email) {
+    public void AddUser(Connection connection, String name, String email) {
         try {
             String insertQuery = "INSERT INTO " + tableName + " (name, email) VALUES (?, ?)";
 
@@ -82,7 +82,7 @@ public class DatabaseManager {
         }
     }
 
-    private void RetrieveUsers(Connection connection) {
+    public void RetrieveUsers(Connection connection) {
         try {
             String selectQuery = "SELECT * FROM " + tableName;
 
@@ -100,7 +100,7 @@ public class DatabaseManager {
         }
     }
 
-    private void ClearTable(Connection connection) {
+    public void ClearTable(Connection connection) {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate("DELETE FROM " + tableName);
@@ -108,6 +108,38 @@ public class DatabaseManager {
         } catch (SQLException e) {
             System.out.println("Error while clearing the table: " + e.getMessage());
         }
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public String getDatabaseName() {
+        return databaseName;
     }
 }
 
