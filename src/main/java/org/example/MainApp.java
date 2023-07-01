@@ -8,7 +8,7 @@ public class MainApp {
         CamelContext context = new DefaultCamelContext();
         context.addRoutes(new MyRouteBuilder());
         context.start();
-        Thread.sleep(5000); // Wait for the migration process to complete
+        Thread.sleep(5000);
         context.stop();
     }
 }
