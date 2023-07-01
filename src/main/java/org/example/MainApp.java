@@ -2,13 +2,16 @@ package org.example;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.impl.DefaultCamelContext;
+import org.example.database.DatabaseManager;
+import org.example.migration.MigrationManager;
+import org.example.migration.MyRouteBuilder;
 
 public class MainApp {
+
+    private static final  DatabaseManager databaseManager = new DatabaseManager("jdbc:mysql://127.0.0.1:3306/", "root", "password");
+    private static final MigrationManager migrationManager = new MigrationManager();
     public static void main(String[] args) throws Exception {
-        CamelContext context = new DefaultCamelContext();
-        context.addRoutes(new MyRouteBuilder());
-        context.start();
-        Thread.sleep(5000);
-        context.stop();
+        databaseManager.CreateAndConnect();
+        migrationManager.Migrate();
     }
 }

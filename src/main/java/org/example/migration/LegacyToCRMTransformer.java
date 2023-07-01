@@ -1,4 +1,4 @@
-package org.example;
+package org.example.migration;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sun.xml.bind.v2.runtime.output.SAXOutput;
