@@ -13,7 +13,7 @@ public class DatabaseManager {
     private String username;
     private String password;
 
-    private String tableName, databaseName;
+    private String tableName, sourceDatabaseName, targetDatabaseName;
 
     public DatabaseManager() {
         Properties properties = new Properties();
@@ -24,16 +24,17 @@ public class DatabaseManager {
             this.username = properties.getProperty("db.user");
             this.password = properties.getProperty("db.password");
             this.tableName = properties.getProperty("db.table");
-            this.databaseName = properties.getProperty("db.source");
+            this.sourceDatabaseName = properties.getProperty("db.source");
+            this.targetDatabaseName = properties.getProperty("db.target");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void CreateAndConnect() {
+    public void CreateSourceAndConnect() {
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             CreateDatabaseIfNotExists(connection);
-            connection.setCatalog(databaseName);
+            connection.setCatalog(sourceDatabaseName);
             CreateTable(connection);
             AddUser(connection, "Szymon", "szymontalar@gmail.com");
             RetrieveUsers(connection);
@@ -49,10 +50,10 @@ public class DatabaseManager {
     public void CreateDatabaseIfNotExists(Connection connection) {
         try  {
             String query = ReadSqlFromFile("src/main/resources/Scripts/V1/create_database.sql");
-            query = query.replace("{{databaseName}}", databaseName);
+            query = query.replace("{{databaseName}}", sourceDatabaseName);
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
-            System.out.println("Database " + databaseName + " has been created.");
+            System.out.println("Database " + sourceDatabaseName + " has been created.");
         } catch (SQLException e) {
             System.out.println("Error creating the database: " + e.getMessage());
         }
@@ -170,8 +171,24 @@ public class DatabaseManager {
         return tableName;
     }
 
-    public String getDatabaseName() {
-        return databaseName;
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public String getSourceDatabaseName() {
+        return sourceDatabaseName;
+    }
+
+    public void setSourceDatabaseName(String sourceDatabaseName) {
+        this.sourceDatabaseName = sourceDatabaseName;
+    }
+
+    public String getTargetDatabaseName() {
+        return targetDatabaseName;
+    }
+
+    public void setTargetDatabaseName(String targetDatabaseName) {
+        this.targetDatabaseName = targetDatabaseName;
     }
 }
 

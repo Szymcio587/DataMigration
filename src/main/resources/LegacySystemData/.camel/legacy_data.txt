@@ -1,3 +1,0 @@
-John Doe,johndoe@email.com,1234567890
-Jane Smith,janesmith@email.com,9876543210
-Jane Htims,janehtims@email.com,9876543210

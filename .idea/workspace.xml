@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="523a9de1-4346-4179-a4c0-b9ec556a294f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/MainApp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/database/DatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/database/DatabaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/database.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/migration/LegacyToCRMTransformer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/migration/MyRouteBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/migration/MyRouteBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/CRMSystemData/data.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/LegacySystemData/.camel/legacy_data.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/database/DatabaseManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/database/DatabaseManagerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

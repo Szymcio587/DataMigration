@@ -21,7 +21,7 @@ public class DatabaseManagerTest {
         try (Connection connection = DriverManager.getConnection(databaseManager.getUrl(),
                 databaseManager.getUsername(), databaseManager.getPassword())) {
             databaseManager.CreateDatabaseIfNotExists(connection);
-            connection.setCatalog(databaseManager.getDatabaseName());
+            connection.setCatalog(databaseManager.getSourceDatabaseName());
             databaseManager.CreateTable(connection);
             System.out.println("Connected to the database.");
             databaseManager.AddUser(connection, "Szymon", "szymontalar@gmail.com");
