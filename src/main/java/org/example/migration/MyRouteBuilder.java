@@ -22,7 +22,7 @@ public class MyRouteBuilder extends RouteBuilder {
     @Override
     public void configure() throws Exception {
         ReadProperties();
-        
+
         from("file:src/main/resources/Scripts/V1")
                 .routeId("route1")
                 .onException(Exception.class)
