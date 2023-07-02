@@ -13,7 +13,7 @@ public class DatabaseManager {
     private String username;
     private String password;
 
-    private final String tableName = "users", databaseName = "source";
+    private String tableName, databaseName;
 
     public DatabaseManager() {
         Properties properties = new Properties();
@@ -23,6 +23,8 @@ public class DatabaseManager {
             this.url = properties.getProperty("db.url");
             this.username = properties.getProperty("db.user");
             this.password = properties.getProperty("db.password");
+            this.tableName = properties.getProperty("db.table");
+            this.databaseName = properties.getProperty("db.source");
         } catch (IOException e) {
             e.printStackTrace();
         }
