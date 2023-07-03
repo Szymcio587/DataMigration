@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="523a9de1-4346-4179-a4c0-b9ec556a294f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/migration/MigrationManagerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/migration/MigrationTransformer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/migration/MyRouteBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/migration/MyRouteBuilder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -18,8 +17,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -64,10 +63,11 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="org.example.migration" />
       <recent name="org.example.database" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.MigrationManagerTest.TestMigration">
+  <component name="RunManager" selected="Application.org.example.MainApp">
     <configuration name="org.example.MainApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.MainApp" />
       <module name="DataMigration" />
@@ -147,9 +147,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.MigrationManagerTest.TestMigration" />
         <item itemvalue="Application.org.example.MainApp" />
         <item itemvalue="JUnit.DatabaseManagerTest.TestConnectionAndQueries" />
+        <item itemvalue="JUnit.MigrationManagerTest.TestMigration" />
         <item itemvalue="JUnit.DatabaseManagerTest.TestQueries" />
         <item itemvalue="JUnit.DatabaseManagerTest.TestConnection" />
       </list>
@@ -165,6 +165,7 @@
       <updated>1688131369043</updated>
       <workItem from="1688131370683" duration="7097000" />
       <workItem from="1688198108623" duration="13681000" />
+      <workItem from="1688399431300" duration="4280000" />
     </task>
     <servers />
   </component>
